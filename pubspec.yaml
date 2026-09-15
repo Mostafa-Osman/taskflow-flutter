@@ -1,0 +1,54 @@
+name: taskflow
+description: Production-style Flutter architecture showcase for professional task and project management.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State management — feature Cubits and session orchestration
+  flutter_bloc: ^9.1.1
+
+  # Navigation and deep links
+  go_router: ^16.2.4
+
+  # Composition-root service location; widgets still receive constructor-injected Cubits
+  get_it: ^8.2.0
+
+  # HTTP client used by ApiClient (mock interceptor in this repo)
+  dio: ^5.9.0
+
+  # Immutable union states
+  freezed_annotation: ^3.1.0
+
+  # DTO serialization
+  json_annotation: ^4.12.0
+
+  # Auth token persistence
+  flutter_secure_storage: ^9.2.4
+
+  # Theme, mock user registry, lightweight list cache
+  shared_preferences: ^2.5.3
+
+  # Date formatting on cards and details
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.15
+  freezed: ^3.2.3
+  json_serializable: ^6.9.5
+  mocktail: ^1.0.4
+  bloc_test: ^10.0.0
+
+flutter:
+  uses-material-design: true
