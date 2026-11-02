@@ -8,6 +8,7 @@ import 'package:taskflow/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:taskflow/features/auth/presentation/cubit/auth_state.dart';
 import 'package:taskflow/features/auth/presentation/pages/login_page.dart';
 
+import '../helpers/l10n.dart';
 import '../helpers/mocks.dart';
 
 void main() {
@@ -45,7 +46,7 @@ void main() {
         ),
       ],
     );
-    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+    await tester.pumpWidget(wrapRouterWithL10n(router));
   }
 
   testWidgets('shows validation errors for empty credentials', (tester) async {

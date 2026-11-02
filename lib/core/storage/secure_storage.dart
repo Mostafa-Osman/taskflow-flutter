@@ -29,7 +29,7 @@ class FlutterSecureStore implements SecureStore {
   @override
   Future<String?> readToken() async {
     try {
-      return _storage.read(key: StorageKeys.authToken);
+      return await _storage.read(key: StorageKeys.authToken);
     } catch (error) {
       throw const CacheException('Unable to read session token.');
     }

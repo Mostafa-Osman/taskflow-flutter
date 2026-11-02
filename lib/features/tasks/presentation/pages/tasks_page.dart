@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/l10n/label_localizations.dart';
 import '../../../../core/widgets/app_empty_view.dart';
 import '../../../../core/widgets/app_error_view.dart';
+import '../../../../core/widgets/app_refreshable.dart';
 import '../../../../core/widgets/app_skeleton.dart';
 import '../../domain/entities/task_filter.dart';
 import '../../domain/entities/task_priority.dart';
@@ -50,10 +53,10 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasks'),
+        title: Text(context.l10n.tasksTitle),
         actions: [
           IconButton(
-            tooltip: 'New task',
+            tooltip: context.l10n.newTask,
             onPressed: () => context.push('/tasks/new'),
             icon: const Icon(Icons.add),
           ),
@@ -66,9 +69,9 @@ class _TasksPageState extends State<TasksPage> {
             child: TextField(
               controller: _search,
               textInputAction: TextInputAction.search,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Search tasks',
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: context.l10n.searchTasks,
               ),
               onSubmitted: (value) =>
                   context.read<TasksCubit>().search(value.trim()),
@@ -80,17 +83,23 @@ class _TasksPageState extends State<TasksPage> {
               builder: (context, state) {
                 return switch (state) {
                   TasksInitial() || TasksLoading() => const AppSkeleton(),
-                  TasksEmpty() => AppEmptyView(
-                    title: 'No tasks match',
-                    message: 'Try a different search or clear filters.',
-                    actionLabel: 'Clear filters',
-                    onAction: () => context.read<TasksCubit>().load(
-                      filter: const TaskFilter(),
+                  TasksEmpty() => AppRefreshable(
+                    onRefresh: () => context.read<TasksCubit>().refresh(),
+                    child: AppEmptyView(
+                      title: context.l10n.noTasksMatch,
+                      message: context.l10n.noTasksMatchMessage,
+                      actionLabel: context.l10n.clear,
+                      onAction: () => context.read<TasksCubit>().load(
+                        filter: const TaskFilter(),
+                      ),
                     ),
                   ),
-                  TasksError(:final failure) => AppErrorView(
-                    message: failure.message,
-                    onRetry: () => context.read<TasksCubit>().retry(),
+                  TasksError(:final failure) => AppRefreshable(
+                    onRefresh: () => context.read<TasksCubit>().refresh(),
+                    child: AppErrorView(
+                      message: failure.message,
+                      onRetry: () => context.read<TasksCubit>().retry(),
+                    ),
                   ),
                   TasksSuccess(
                     :final items,
@@ -150,20 +159,22 @@ class _FilterBar extends StatelessWidget {
           child: Row(
             children: [
               FilterChip(
-                label: Text(filter.status?.label ?? 'Status'),
+                label: Text(filter.status?.l10n(context.l10n) ?? context.l10n.status),
                 selected: filter.status != null,
                 onSelected: (_) => _pickStatus(context, filter),
               ),
               const SizedBox(width: 8),
               FilterChip(
-                label: Text(filter.priority?.label ?? 'Priority'),
+                label: Text(
+                  filter.priority?.l10n(context.l10n) ?? context.l10n.priority,
+                ),
                 selected: filter.priority != null,
                 onSelected: (_) => _pickPriority(context, filter),
               ),
               if (filter.status != null || filter.priority != null) ...[
                 const SizedBox(width: 8),
                 ActionChip(
-                  label: const Text('Clear'),
+                  label: Text(context.l10n.clear),
                   onPressed: () => context.read<TasksCubit>().applyFilter(
                     TaskFilter(query: filter.query),
                   ),
@@ -185,12 +196,12 @@ class _FilterBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('All statuses'),
+                title: Text(context.l10n.allStatuses),
                 onTap: () => Navigator.pop(context, null),
               ),
               ...TaskStatus.values.map(
                 (status) => ListTile(
-                  title: Text(status.label),
+                  title: Text(status.l10n(context.l10n)),
                   onTap: () => Navigator.pop(context, status),
                 ),
               ),
@@ -218,12 +229,12 @@ class _FilterBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('All priorities'),
+                title: Text(context.l10n.allPriorities),
                 onTap: () => Navigator.pop(context, null),
               ),
               ...TaskPriority.values.map(
                 (priority) => ListTile(
-                  title: Text(priority.label),
+                  title: Text(priority.l10n(context.l10n)),
                   onTap: () => Navigator.pop(context, priority),
                 ),
               ),
@@ -261,7 +272,7 @@ class _PaginationFooter extends StatelessWidget {
     if (loadMoreFailure != null) {
       return AppErrorView(
         message: loadMoreFailure!,
-        retryLabel: 'Retry loading more',
+        retryLabel: context.l10n.retryLoadingMore,
         onRetry: onRetry,
       );
     }
@@ -272,9 +283,9 @@ class _PaginationFooter extends StatelessWidget {
       );
     }
     if (!hasMore) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(child: Text('You have reached the end.')),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Center(child: Text(context.l10n.endOfList)),
       );
     }
     return const SizedBox(height: 16);

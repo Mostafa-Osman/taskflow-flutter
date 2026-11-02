@@ -10,6 +10,18 @@ import '../../features/auth/presentation/cubit/auth_state.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
+import '../../features/classes/presentation/cubit/class_details_cubit.dart';
+import '../../features/classes/presentation/cubit/class_form_cubit.dart';
+import '../../features/classes/presentation/cubit/classes_cubit.dart';
+import '../../features/classes/presentation/pages/class_details_page.dart';
+import '../../features/classes/presentation/pages/class_form_page.dart';
+import '../../features/classes/presentation/pages/classes_page.dart';
+import '../../features/coursework/presentation/cubit/coursework_cubit.dart';
+import '../../features/coursework/presentation/pages/coursework_page.dart';
+import '../../features/grade_publication/presentation/cubit/publication_cubit.dart';
+import '../../features/grade_publication/presentation/pages/publication_preview_page.dart';
+import '../../features/integrations/presentation/cubit/integration_cubit.dart';
+import '../../features/integrations/presentation/pages/integration_settings_page.dart';
 import '../../features/notifications/presentation/cubit/notifications_cubit.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/projects/presentation/cubit/project_details_cubit.dart';
@@ -112,6 +124,23 @@ GoRouter createRouter({required AuthCubit authCubit, required GetIt getIt}) {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                path: AppRoutes.classes,
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (_) {
+                      final cubit = getIt<ClassesCubit>();
+                      unawaited(cubit.load());
+                      return cubit;
+                    },
+                    child: const ClassesPage(),
+                  );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 path: AppRoutes.tasks,
                 builder: (context, state) {
                   return BlocProvider(
@@ -144,6 +173,81 @@ GoRouter createRouter({required AuthCubit authCubit, required GetIt getIt}) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.classCreate,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => getIt<ClassFormCubit>(),
+            child: const ClassFormPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.integrations,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) {
+              final cubit = getIt<IntegrationCubit>();
+              unawaited(cubit.load());
+              return cubit;
+            },
+            child: const IntegrationSettingsPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/classes/:classId',
+        builder: (context, state) {
+          final classId = state.pathParameters['classId']!;
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) {
+                  final cubit = getIt<ClassDetailsCubit>();
+                  unawaited(cubit.load(classId));
+                  return cubit;
+                },
+              ),
+              BlocProvider(
+                create: (_) {
+                  final cubit = getIt<IntegrationCubit>();
+                  unawaited(cubit.load());
+                  return cubit;
+                },
+              ),
+            ],
+            child: ClassDetailsPage(classId: classId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/coursework/:courseworkId/publish',
+        builder: (context, state) {
+          final courseworkId = state.pathParameters['courseworkId']!;
+          return BlocProvider(
+            create: (_) {
+              final cubit = getIt<PublicationCubit>();
+              unawaited(cubit.load(courseworkId));
+              return cubit;
+            },
+            child: PublicationPreviewPage(courseworkId: courseworkId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/coursework/:courseworkId',
+        builder: (context, state) {
+          final courseworkId = state.pathParameters['courseworkId']!;
+          return BlocProvider(
+            create: (_) {
+              final cubit = getIt<CourseworkCubit>();
+              unawaited(cubit.load(courseworkId));
+              return cubit;
+            },
+            child: CourseworkPage(courseworkId: courseworkId),
+          );
+        },
       ),
       GoRoute(
         path: '/projects/:projectId',

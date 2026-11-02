@@ -35,48 +35,61 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create account')),
-      body: SafeArea(
-        child: BlocConsumer<AuthCubit, AuthState>(
-          listenWhen: (previous, current) => current is AuthError,
-          listener: (context, state) {
-            if (state is AuthError) {
-              context.showSnack(state.failure.message);
-            }
-          },
-          builder: (context, state) {
-            final loading = state is AuthLoading;
-            return ListView(
-              padding: const EdgeInsets.all(24),
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      AppTextField(
-                        label: 'Name',
-                        controller: _name,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.name,
-                      ),
-                      const SizedBox(height: 16),
-                      AppTextField(
-                        label: 'Email',
-                        controller: _email,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.email,
-                      ),
-                      const SizedBox(height: 16),
-                      AppTextField(
-                        label: 'Password',
-                        controller: _password,
-                        obscureText: true,
-                        validator: Validators.password,
-                      ),
-                      const SizedBox(height: 24),
-                      AppButton(
-                        label: 'Create account',
+          appBar: AppBar(title: Text(context.l10n.createAccount)),
+          body: SafeArea(
+            child: BlocConsumer<AuthCubit, AuthState>(
+              listenWhen: (previous, current) => current is AuthError,
+              listener: (context, state) {
+                if (state is AuthError) {
+                  context.showSnack(state.failure.message);
+                }
+              },
+              builder: (context, state) {
+                final loading = state is AuthLoading;
+                final l10n = context.l10n;
+                return ListView(
+                  padding: const EdgeInsets.all(24),
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          AppTextField(
+                            label: l10n.name,
+                            controller: _name,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) => Validators.name(
+                              value,
+                              empty: l10n.nameRequired,
+                              tooShort: l10n.nameTooShort,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          AppTextField(
+                            label: l10n.email,
+                            controller: _email,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) => Validators.email(
+                              value,
+                              empty: l10n.emailRequired,
+                              invalid: l10n.emailInvalid,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          AppTextField(
+                            label: l10n.password,
+                            controller: _password,
+                            obscureText: true,
+                            validator: (value) => Validators.password(
+                              value,
+                              empty: l10n.passwordRequired,
+                              tooShort: l10n.passwordTooShort,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          AppButton(
+                            label: l10n.createAccount,
                         loading: loading,
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
@@ -96,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: loading ? null : () => context.go('/login'),
-                  child: const Text('Already have an account? Sign in'),
+                  child: Text(l10n.alreadyHaveAccount),
                 ),
               ],
             );

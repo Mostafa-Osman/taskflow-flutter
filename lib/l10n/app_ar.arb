@@ -1,0 +1,264 @@
+{
+  "@@locale": "ar",
+  "appTitle": "تاسك فلو",
+  "navProjects": "المشاريع",
+  "navClasses": "الفصول",
+  "navTasks": "المهام",
+  "navProfile": "الملف الشخصي",
+  "language": "اللغة",
+  "languageSystem": "النظام",
+  "languageEnglish": "الإنجليزية",
+  "languageArabic": "العربية",
+  "appearance": "المظهر",
+  "themeSystem": "النظام",
+  "themeLight": "فاتح",
+  "themeDark": "داكن",
+  "environment": "البيئة",
+  "notifications": "الإشعارات",
+  "signOut": "تسجيل الخروج",
+  "guest": "زائر",
+  "tryAgain": "حاول مرة أخرى",
+  "retryLoadingMore": "إعادة تحميل المزيد",
+  "welcomeBack": "مرحبًا بعودتك",
+  "signInSubtitle": "سجّل الدخول لإدارة المشاريع والمهام.",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "name": "الاسم",
+  "signIn": "تسجيل الدخول",
+  "createAnAccount": "إنشاء حساب",
+  "createAccount": "إنشاء حساب",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟ سجّل الدخول",
+  "emailRequired": "البريد الإلكتروني مطلوب.",
+  "emailInvalid": "أدخل بريدًا إلكترونيًا صالحًا.",
+  "passwordRequired": "كلمة المرور مطلوبة.",
+  "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل.",
+  "nameRequired": "الاسم مطلوب.",
+  "nameTooShort": "يجب أن يتكون الاسم من حرفين على الأقل.",
+  "classNameRequired": "اسم الفصل مطلوب.",
+  "titleRequired": "العنوان مطلوب.",
+  "projectRequired": "المشروع مطلوب.",
+  "projectsTitle": "المشاريع",
+  "noProjectsYet": "لا توجد مشاريع بعد",
+  "noProjectsMessage": "ستظهر المشاريع هنا بعد إنشائها.",
+  "projectTitle": "المشروع",
+  "addTask": "إضافة مهمة",
+  "tasksTitle": "المهام",
+  "noTasksInProject": "لا توجد مهام في هذا المشروع بعد.",
+  "projectProgress": "{completed}/{total} مكتمل",
+  "@projectProgress": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "updatedOn": "تحديث {date}",
+  "@updatedOn": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "newTask": "مهمة جديدة",
+  "editTask": "تعديل المهمة",
+  "searchTasks": "البحث في المهام",
+  "noTasksMatch": "لا توجد مهام مطابقة",
+  "noTasksMatchMessage": "جرّب بحثًا مختلفًا أو امسح عوامل التصفية.",
+  "status": "الحالة",
+  "priority": "الأولوية",
+  "clear": "مسح",
+  "allStatuses": "كل الحالات",
+  "allPriorities": "كل الأولويات",
+  "endOfList": "وصلت إلى نهاية القائمة.",
+  "title": "العنوان",
+  "description": "الوصف",
+  "project": "المشروع",
+  "dueDate": "تاريخ الاستحقاق",
+  "notSet": "غير محدد",
+  "saveChanges": "حفظ التغييرات",
+  "createTask": "إنشاء مهمة",
+  "taskCreated": "تم إنشاء المهمة.",
+  "taskUpdated": "تم تحديث المهمة.",
+  "taskDeleted": "تم حذف المهمة.",
+  "taskTitle": "المهمة",
+  "edit": "تعديل",
+  "delete": "حذف",
+  "markCompleted": "تعيين كمكتملة",
+  "taskStatusTodo": "للتنفيذ",
+  "taskStatusInProgress": "قيد التنفيذ",
+  "taskStatusDone": "مكتملة",
+  "priorityLow": "منخفضة",
+  "priorityMedium": "متوسطة",
+  "priorityHigh": "عالية",
+  "profileTitle": "الملف الشخصي",
+  "noNotifications": "لا توجد إشعارات",
+  "noNotificationsMessage": "ستظهر هنا نشاطات مساحة العمل.",
+  "notFoundTitle": "غير موجود",
+  "pageDoesNotExist": "هذه الصفحة غير موجودة",
+  "pageDoesNotExistMessage": "قد يكون الرابط تالفًا أو تمت إزالة العنصر.",
+  "goToProjects": "الانتقال إلى المشاريع",
+  "classesTitle": "الفصول",
+  "integrationSettings": "إعدادات التكامل",
+  "createNativeClass": "إنشاء فصل محلي",
+  "noClassesYet": "لا توجد فصول بعد",
+  "noClassesMessage": "يمكنك إنشاء فصل محلي في أي وقت. جوجل كلاس روم اختياري.",
+  "filterAll": "الكل",
+  "filterNative": "محلي",
+  "filterGoogleConnected": "مرتبط بجوجل",
+  "filterSyncIssues": "مشاكل المزامنة",
+  "nativeClassHint": "يمكنك إنشاء فصل محلي دون ربط جوجل كلاس روم.",
+  "className": "اسم الفصل",
+  "subjectOptional": "المادة (اختياري)",
+  "localDescription": "الوصف (محلي)",
+  "nativeClassCreated": "تم إنشاء الفصل المحلي.",
+  "sourceNative": "محلي",
+  "sourceImported": "مستورد",
+  "googleConnected": "مرتبط بجوجل",
+  "syncIssue": "مشكلة مزامنة",
+  "statusActive": "نشط",
+  "statusArchived": "مؤرشف",
+  "externalLabel": "خارجي: {name} · {section}",
+  "@externalLabel": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "section": { "type": "String" }
+    }
+  },
+  "classTitle": "الفصل",
+  "mapped": "مربوط",
+  "locallyManaged": "يُدار محليًا",
+  "localClassFields": "الاسم والوصف والمادة المحلية",
+  "noLocalNotes": "لا توجد ملاحظات محلية",
+  "noSubject": "بدون مادة",
+  "externallySynchronized": "متزامن خارجيًا",
+  "externalSectionRoom": "الشعبة {section} · الغرفة {room}",
+  "@externalSectionRoom": {
+    "placeholders": {
+      "section": { "type": "String" },
+      "room": { "type": "String" }
+    }
+  },
+  "mapExistingCourse": "ربط مقرر جوجل قائم",
+  "synchronizeCourse": "مزامنة المقرر",
+  "unmapExternalCourse": "إلغاء ربط المقرر الخارجي",
+  "coursework": "الواجبات",
+  "noCourseworkYet": "لا توجد واجبات مستوردة بعد.",
+  "connectBrowseFirst": "اربط جوجل كلاس روم ثم استورد المقررات أو تصفحها أولًا.",
+  "confirmMapping": "تأكيد الربط",
+  "confirmMappingMessage": "ربط هذا الفصل المحلي بـ {name}؟ لن يتم دمج الطلاب بالاسم أو رقم الهاتف.",
+  "@confirmMappingMessage": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "mappingSaved": "تم حفظ الربط.",
+  "googleClassroom": "جوجل كلاس روم",
+  "googleOptionalHint": "ربط جوجل كلاس روم اختياري. تبقى الفصول المحلية في هذا الحساب إذا لم تربط أو إذا فصلت لاحقًا.",
+  "connectGoogleClassroom": "ربط جوجل كلاس روم",
+  "connectionStatus": "الاتصال {status}",
+  "@connectionStatus": {
+    "placeholders": {
+      "status": { "type": "String" }
+    }
+  },
+  "defaultGradePolicy": "سياسة نشر الدرجات الافتراضية",
+  "approvalVsPublication": "الاعتماد قرار داخلي. النشر عملية منفصلة عبر واجهة كلاس روم. الدرجة لا تظهر للطلاب لمجرد اعتمادها هنا.",
+  "importSelectedCourses": "استيراد المقررات المحددة",
+  "disconnectGoogleClassroom": "فصل جوجل كلاس روم",
+  "policyDisabled": "معطّل — لا يُنشر أي شيء عبر هذا الاتصال",
+  "policyManualOnly": "يدوي فقط — انشر بعد إجراء نشر صريح",
+  "policyAfterApproval": "بعد اعتماد المعلم — إنشاء مهمة نشر عند اعتماد الدرجة",
+  "googleConnectedSnack": "تم ربط جوجل كلاس روم.",
+  "googleDisconnectedSnack": "تم الفصل. بقيت الفصول المحلية والسجل محفوظة.",
+  "policyUpdatedSnack": "تم تحديث سياسة النشر الافتراضية.",
+  "importedCoursesSnack": "تم استيراد {count} مقرر. أُعيد استخدام المكرر.",
+  "@importedCoursesSnack": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "courseworkFallback": "الواجب",
+  "courseworkNotFound": "الواجب غير موجود.",
+  "effectivePolicy": "السياسة الفعلية: {policy}",
+  "@effectivePolicy": {
+    "placeholders": {
+      "policy": { "type": "String" }
+    }
+  },
+  "approvalLocalOnly": "الاعتماد محلي. يحدث النشر فقط بعد نتيجة مؤكدة من واجهة كلاس روم.",
+  "capabilityLabel": "القدرة: {state}",
+  "@capabilityLabel": {
+    "placeholders": {
+      "state": { "type": "String" }
+    }
+  },
+  "lastCheck": "آخر فحص {date}",
+  "@lastCheck": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "eligibleCount": "مؤهل {count}",
+  "@eligibleCount": { "placeholders": { "count": { "type": "int" } } },
+  "blockedCount": "محظور {count}",
+  "@blockedCount": { "placeholders": { "count": { "type": "int" } } },
+  "pendingCount": "قيد الانتظار {count}",
+  "@pendingCount": { "placeholders": { "count": { "type": "int" } } },
+  "publishedCount": "منشور {count}",
+  "@publishedCount": { "placeholders": { "count": { "type": "int" } } },
+  "failedCount": "فشل {count}",
+  "@failedCount": { "placeholders": { "count": { "type": "int" } } },
+  "conflictsCount": "تعارضات {count}",
+  "@conflictsCount": { "placeholders": { "count": { "type": "int" } } },
+  "reviewPublicationPreview": "مراجعة معاينة النشر",
+  "publishGrades": "نشر الدرجات",
+  "unableToLoadPreview": "تعذر تحميل المعاينة.",
+  "publicationPreviewHint": "يمكن نشر العناصر المؤهلة. تبقى المحظورة محلية. الاعتماد لا يعني أن الدرجة ظهرت للطلاب.",
+  "scoreLabel": "الدرجة {score}/{max}",
+  "@scoreLabel": {
+    "placeholders": {
+      "score": { "type": "String" },
+      "max": { "type": "String" }
+    }
+  },
+  "eligible": "مؤهل",
+  "blocked": "محظور",
+  "approvedLocally": "معتمد محليًا",
+  "notApproved": "غير معتمد",
+  "publishSelected": "نشر المحدد",
+  "publishAllEligible": "نشر كل المؤهل",
+  "latestApiOutcomes": "أحدث نتائج الواجهة",
+  "verifiedGrade": "درجة مؤكدة {grade}",
+  "@verifiedGrade": {
+    "placeholders": {
+      "grade": { "type": "String" }
+    }
+  },
+  "retry": "إعادة المحاولة",
+  "retryStatus": "حالة إعادة المحاولة: {status}",
+  "@retryStatus": {
+    "placeholders": {
+      "status": { "type": "String" }
+    }
+  },
+  "publicationFinished": "انتهى النشر. الحالة ناتجة عن واجهة كلاس روم وليس من هذه الشاشة.",
+  "inheritPolicy": "وراثة إعداد الاتصال",
+  "disablePublication": "تعطيل نشر الدرجات",
+  "manualPublication": "نشر يدوي",
+  "publishAfterApproval": "النشر بعد اعتماد المعلم",
+  "policyLabel": "السياسة {policy} · {capability}",
+  "@policyLabel": {
+    "placeholders": {
+      "policy": { "type": "String" },
+      "capability": { "type": "String" }
+    }
+  },
+  "noLocalNotesLine": "{name}\n{notes}\n{subject}",
+  "@noLocalNotesLine": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "notes": { "type": "String" },
+      "subject": { "type": "String" }
+    }
+  }
+}

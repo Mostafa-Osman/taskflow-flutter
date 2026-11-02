@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,6 +9,7 @@ import 'package:taskflow/features/projects/presentation/cubit/projects_cubit.dar
 import 'package:taskflow/features/projects/presentation/cubit/projects_state.dart';
 import 'package:taskflow/features/projects/presentation/pages/projects_page.dart';
 
+import '../helpers/l10n.dart';
 import '../helpers/mocks.dart';
 
 void main() {
@@ -22,8 +22,8 @@ void main() {
 
   Future<void> pumpPage(WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: BlocProvider<ProjectsCubit>.value(
+      wrapWithL10n(
+        BlocProvider<ProjectsCubit>.value(
           value: cubit,
           child: const ProjectsPage(),
         ),

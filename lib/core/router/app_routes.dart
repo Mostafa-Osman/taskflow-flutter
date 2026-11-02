@@ -3,6 +3,9 @@ abstract final class AppRoutes {
   static const login = '/login';
   static const register = '/register';
   static const projects = '/projects';
+  static const classes = '/classes';
+  static const classCreate = '/classes/new';
+  static const integrations = '/integrations/google-classroom';
   static const tasks = '/tasks';
   static const profile = '/profile';
   static const notFound = '/404';

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/l10n/label_localizations.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../projects/domain/entities/project.dart';
@@ -51,7 +52,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
         }
         if (state.submitted) {
           context.showSnack(
-            state.isEditing ? 'Task updated.' : 'Task created.',
+            state.isEditing ? context.l10n.taskUpdated : context.l10n.taskCreated,
           );
           context.pop();
         }
@@ -59,13 +60,13 @@ class _TaskFormPageState extends State<TaskFormPage> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(state.isEditing ? 'Edit task' : 'New task'),
+            title: Text(state.isEditing ? context.l10n.editTask : context.l10n.newTask),
           ),
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
               AppTextField(
-                label: 'Title',
+                label: context.l10n.title,
                 controller: _title,
                 onChanged: context.read<TaskFormCubit>().setTitle,
               ),
@@ -78,7 +79,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
               ],
               const SizedBox(height: 16),
               AppTextField(
-                label: 'Description',
+                label: context.l10n.description,
                 controller: _description,
                 maxLines: 4,
                 onChanged: context.read<TaskFormCubit>().setDescription,
@@ -94,7 +95,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
                     // ignore: deprecated_member_use
                     value: state.projectId,
                     decoration: InputDecoration(
-                      labelText: 'Project',
+                      labelText: context.l10n.project,
                       errorText: state.projectError,
                     ),
                     items: projects
@@ -113,12 +114,12 @@ class _TaskFormPageState extends State<TaskFormPage> {
               DropdownButtonFormField<TaskStatus>(
                 // ignore: deprecated_member_use
                 value: state.status,
-                decoration: const InputDecoration(labelText: 'Status'),
+                decoration: InputDecoration(labelText: context.l10n.status),
                 items: TaskStatus.values
                     .map(
                       (status) => DropdownMenuItem(
                         value: status,
-                        child: Text(status.label),
+                        child: Text(status.l10n(context.l10n)),
                       ),
                     )
                     .toList(),
@@ -132,12 +133,12 @@ class _TaskFormPageState extends State<TaskFormPage> {
               DropdownButtonFormField<TaskPriority>(
                 // ignore: deprecated_member_use
                 value: state.priority,
-                decoration: const InputDecoration(labelText: 'Priority'),
+                decoration: InputDecoration(labelText: context.l10n.priority),
                 items: TaskPriority.values
                     .map(
                       (priority) => DropdownMenuItem(
                         value: priority,
-                        child: Text(priority.label),
+                        child: Text(priority.l10n(context.l10n)),
                       ),
                     )
                     .toList(),
@@ -150,11 +151,13 @@ class _TaskFormPageState extends State<TaskFormPage> {
               const SizedBox(height: 16),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Due date'),
+                title: Text(context.l10n.dueDate),
                 subtitle: Text(
                   state.dueDate == null
-                      ? 'Not set'
-                      : DateFormat.yMMMd().format(state.dueDate!.toLocal()),
+                      ? context.l10n.notSet
+                      : DateFormat.yMMMd(context.localeName).format(
+                          state.dueDate!.toLocal(),
+                        ),
                 ),
                 trailing: const Icon(Icons.event),
                 onTap: () async {
@@ -171,7 +174,9 @@ class _TaskFormPageState extends State<TaskFormPage> {
               ),
               const SizedBox(height: 24),
               AppButton(
-                label: state.isEditing ? 'Save changes' : 'Create task',
+                label: state.isEditing
+                    ? context.l10n.saveChanges
+                    : context.l10n.createTask,
                 loading: state.submitting,
                 onPressed: () => context.read<TaskFormCubit>().submit(),
               ),

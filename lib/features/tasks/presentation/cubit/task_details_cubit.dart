@@ -19,9 +19,23 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
   final GetTaskDetailsUseCase _getTask;
   final ChangeTaskStatusUseCase _changeStatus;
   final DeleteTaskUseCase _deleteTask;
+  String? _id;
 
   Future<void> load(String id) async {
+    _id = id;
     emit(const TaskDetailsState.loading());
+    await _fetch(id);
+  }
+
+  Future<void> refresh() async {
+    final id = _id;
+    if (id == null) {
+      return;
+    }
+    await _fetch(id);
+  }
+
+  Future<void> _fetch(String id) async {
     final result = await _getTask(id);
     result.fold(
       (failure) => emit(TaskDetailsState.error(failure)),

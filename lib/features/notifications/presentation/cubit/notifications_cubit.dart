@@ -19,6 +19,12 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> load() async {
     emit(const NotificationsState.loading());
+    await _fetch();
+  }
+
+  Future<void> refresh() => _fetch();
+
+  Future<void> _fetch() async {
     final result = await _getNotifications();
     result.fold((failure) => emit(NotificationsState.error(failure)), (items) {
       if (items.isEmpty) {

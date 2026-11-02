@@ -3,14 +3,20 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 
+import '../classroom/classroom_backend.dart';
 import '../constants/app_constants.dart';
 import '../constants/storage_keys.dart';
 import '../storage/local_preferences.dart';
 import 'api_endpoints.dart';
 
 class MockBackendStore {
-  MockBackendStore({required LocalPreferences preferences})
-    : _preferences = preferences;
+  MockBackendStore({
+    required LocalPreferences preferences,
+    ClassroomBackend? classroom,
+  }) : _preferences = preferences,
+       classroom = classroom ?? ClassroomBackend();
+
+  final ClassroomBackend classroom;
 
   final LocalPreferences _preferences;
   final Random _random = Random(42);
@@ -22,6 +28,13 @@ class MockBackendStore {
   final List<Map<String, dynamic>> _notifications = [];
 
   bool _seeded = false;
+
+  Map<String, dynamic>? findUserByEmail(String email) {
+    return _users.cast<Map<String, dynamic>?>().firstWhere(
+      (user) => user!['email'] == email,
+      orElse: () => null,
+    );
+  }
 
   Future<void> initialize() async {
     if (_seeded) {
@@ -79,6 +92,14 @@ class MockBackendStore {
       return _markRead(options, readMatch.group(1)!);
     }
 
+    final classroomResponse = await classroom.handle(
+      options,
+      _userFromAuth(options),
+    );
+    if (classroomResponse != null) {
+      return classroomResponse;
+    }
+
     return _error(options, 404, 'Unknown endpoint.');
   }
 
@@ -112,6 +133,7 @@ class MockBackendStore {
       'name': name,
       'email': email,
       'password': password,
+      ..._teacherDefaults(tenantId: 'tenant-a', organizationId: 'org-1'),
     };
     _users.add(user);
     await _persistUsers();
@@ -320,7 +342,35 @@ class MockBackendStore {
   }
 
   Map<String, dynamic> _publicUser(Map<String, dynamic> user) {
-    return {'id': user['id'], 'name': user['name'], 'email': user['email']};
+    return {
+      'id': user['id'],
+      'name': user['name'],
+      'email': user['email'],
+      'tenantId': user['tenantId'] ?? 'tenant-a',
+      'role': user['role'] ?? 'teacher',
+      'organizationId': user['organizationId'],
+      'assignedClassIds': user['assignedClassIds'] ?? <String>[],
+      'assignedSubject': user['assignedSubject'],
+      'permissions': user['permissions'] ?? const <String>[],
+    };
+  }
+
+  Map<String, dynamic> _teacherDefaults({
+    required String tenantId,
+    String? organizationId,
+  }) {
+    return {
+      'tenantId': tenantId,
+      'role': 'teacher',
+      'organizationId': organizationId,
+      'assignedClassIds': <String>[],
+      'assignedSubject': null,
+      'permissions': const [
+        'publish_grades',
+        'approve_grades',
+        'manage_integrations',
+      ],
+    };
   }
 
   List<Map<String, dynamic>> _projectsWithCounts() {
@@ -393,9 +443,50 @@ class MockBackendStore {
         'name': 'Jane Cooper',
         'email': AppConstants.demoEmail,
         'password': AppConstants.demoPassword,
+        ..._teacherDefaults(tenantId: 'tenant-a', organizationId: 'org-1'),
       });
-      await _persistUsers();
     }
+    for (final user in _users) {
+      user.putIfAbsent('tenantId', () => 'tenant-a');
+      user.putIfAbsent('role', () => 'teacher');
+      user.putIfAbsent('organizationId', () => 'org-1');
+      user.putIfAbsent('assignedClassIds', () => <String>[]);
+      user.putIfAbsent(
+        'permissions',
+        () => const [
+          'publish_grades',
+          'approve_grades',
+          'manage_integrations',
+        ],
+      );
+    }
+    _ensureUser({
+      'id': 'u-assistant',
+      'name': 'Alex Morgan',
+      'email': 'alex@taskflow.dev',
+      'password': AppConstants.demoPassword,
+      'tenantId': 'tenant-a',
+      'role': 'assistant',
+      'organizationId': 'org-1',
+      'assignedClassIds': <String>[],
+      'assignedSubject': 'Math',
+      'permissions': const ['approve_grades'],
+    });
+    _ensureUser({
+      'id': 'u-other',
+      'name': 'Riley Cole',
+      'email': 'riley@other.dev',
+      'password': AppConstants.demoPassword,
+      ..._teacherDefaults(tenantId: 'tenant-b', organizationId: 'org-9'),
+    });
+    await _persistUsers();
+  }
+
+  void _ensureUser(Map<String, dynamic> user) {
+    if (_users.any((item) => item['email'] == user['email'])) {
+      return;
+    }
+    _users.add(user);
   }
 
   Future<void> _persistUsers() async {

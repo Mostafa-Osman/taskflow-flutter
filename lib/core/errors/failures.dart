@@ -43,3 +43,9 @@ class NotFoundFailure extends Failure {
     super.message = 'The requested item could not be found.',
   ]);
 }
+
+class ForbiddenFailure extends Failure {
+  const ForbiddenFailure([
+    super.message = 'You do not have permission to perform this action.',
+  ]);
+}

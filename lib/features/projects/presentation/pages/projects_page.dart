@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/widgets/app_empty_view.dart';
 import '../../../../core/widgets/app_error_view.dart';
+import '../../../../core/widgets/app_refreshable.dart';
 import '../../../../core/widgets/app_skeleton.dart';
 import '../cubit/projects_cubit.dart';
 import '../cubit/projects_state.dart';
@@ -15,18 +17,25 @@ class ProjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Projects')),
+      appBar: AppBar(title: Text(context.l10n.projectsTitle)),
       body: BlocBuilder<ProjectsCubit, ProjectsState>(
         builder: (context, state) {
+          final l10n = context.l10n;
           return switch (state) {
             ProjectsInitial() || ProjectsLoading() => const AppSkeleton(),
-            ProjectsEmpty() => const AppEmptyView(
-              title: 'No projects yet',
-              message: 'Projects will appear here once they are created.',
+            ProjectsEmpty() => AppRefreshable(
+              onRefresh: () => context.read<ProjectsCubit>().refresh(),
+              child: AppEmptyView(
+                title: l10n.noProjectsYet,
+                message: l10n.noProjectsMessage,
+              ),
             ),
-            ProjectsError(:final failure) => AppErrorView(
-              message: failure.message,
-              onRetry: () => context.read<ProjectsCubit>().retry(),
+            ProjectsError(:final failure) => AppRefreshable(
+              onRefresh: () => context.read<ProjectsCubit>().refresh(),
+              child: AppErrorView(
+                message: failure.message,
+                onRetry: () => context.read<ProjectsCubit>().retry(),
+              ),
             ),
             ProjectsSuccess(:final projects, :final refreshing) =>
               RefreshIndicator(

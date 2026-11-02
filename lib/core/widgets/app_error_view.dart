@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class AppErrorView extends StatelessWidget {
   const AppErrorView({
     required this.message,
     super.key,
     this.onRetry,
-    this.retryLabel = 'Try again',
+    this.retryLabel,
   });
 
   final String message;
   final VoidCallback? onRetry;
-  final String retryLabel;
+  final String? retryLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,12 @@ class AppErrorView extends StatelessWidget {
             ),
             if (onRetry != null) ...[
               const SizedBox(height: 16),
-              FilledButton(onPressed: onRetry, child: Text(retryLabel)),
+              FilledButton(
+                onPressed: onRetry,
+                child: Text(
+                  retryLabel ?? AppLocalizations.of(context).tryAgain,
+                ),
+              ),
             ],
           ],
         ),

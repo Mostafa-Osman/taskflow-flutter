@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/l10n/label_localizations.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/entities/task_priority.dart';
@@ -38,16 +40,18 @@ class TaskCard extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   StatusBadge(
-                    label: task.status.label,
+                    label: task.status.l10n(context.l10n),
                     color: _statusColor(task.status),
                   ),
                   StatusBadge(
-                    label: task.priority.label,
+                    label: task.priority.l10n(context.l10n),
                     color: _priorityColor(task.priority),
                   ),
                   if (task.dueDate != null)
                     StatusBadge(
-                      label: DateFormat.MMMd().format(task.dueDate!.toLocal()),
+                      label: DateFormat.MMMd(context.localeName).format(
+                        task.dueDate!.toLocal(),
+                      ),
                     ),
                 ],
               ),

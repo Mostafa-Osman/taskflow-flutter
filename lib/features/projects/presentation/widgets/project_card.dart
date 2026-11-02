@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../domain/entities/project.dart';
 
 class ProjectCard extends StatelessWidget {
@@ -11,7 +12,10 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormat.MMMd().format(project.updatedAt.toLocal());
+    final l10n = context.l10n;
+    final date = DateFormat.MMMd(context.localeName).format(
+      project.updatedAt.toLocal(),
+    );
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -41,12 +45,15 @@ class ProjectCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '${project.completedTaskCount}/${project.taskCount} done',
+                    l10n.projectProgress(
+                      project.completedTaskCount,
+                      project.taskCount,
+                    ),
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   const Spacer(),
                   Text(
-                    'Updated $date',
+                    l10n.updatedOn(date),
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],

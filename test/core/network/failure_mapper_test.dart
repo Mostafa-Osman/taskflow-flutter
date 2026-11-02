@@ -46,6 +46,22 @@ void main() {
     expect(failure, isA<NetworkFailure>());
   });
 
+  test('maps 403 responses to ForbiddenFailure', () {
+    final failure = FailureMapper.fromDio(
+      DioException(
+        requestOptions: options(),
+        type: DioExceptionType.badResponse,
+        response: Response<dynamic>(
+          requestOptions: options(),
+          statusCode: 403,
+          data: {'message': 'You cannot publish grades for this class.'},
+        ),
+      ),
+    );
+    expect(failure, isA<ForbiddenFailure>());
+    expect(failure.message, 'You cannot publish grades for this class.');
+  });
+
   test('maps infrastructure exceptions without leaking Dio types', () {
     expect(
       FailureMapper.from(const ValidationException('bad')),

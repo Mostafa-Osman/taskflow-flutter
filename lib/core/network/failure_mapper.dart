@@ -19,6 +19,9 @@ abstract final class FailureMapper {
     if (error is NotFoundException) {
       return NotFoundFailure(error.message);
     }
+    if (error is ForbiddenException) {
+      return ForbiddenFailure(error.message);
+    }
     if (error is NetworkException) {
       return NetworkFailure(error.message);
     }
@@ -65,6 +68,8 @@ abstract final class FailureMapper {
         return ValidationFailure(message ?? 'Please check your input.');
       case 401:
         return UnauthorizedFailure(message ?? 'Please sign in again.');
+      case 403:
+        return ForbiddenFailure(message ?? 'You do not have permission.');
       case 404:
         return NotFoundFailure(message ?? 'The requested item was not found.');
       case 500:

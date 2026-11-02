@@ -6,13 +6,16 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../config/env/app_env.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/widgets/app_empty_view.dart';
 import '../../../../core/widgets/app_error_view.dart';
-import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/app_skeleton.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../notifications/presentation/cubit/notifications_cubit.dart';
 import '../../../notifications/presentation/cubit/notifications_state.dart';
+import '../../domain/app_language.dart';
+import '../cubit/locale_cubit.dart';
 import '../cubit/theme_cubit.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -21,10 +24,14 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final env = context.read<AppEnv>();
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      appBar: AppBar(title: Text(l10n.profileTitle)),
+      body: RefreshIndicator(
+        onRefresh: () => context.read<NotificationsCubit>().refresh(),
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
         children: [
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
@@ -35,22 +42,60 @@ class ProfilePage extends StatelessWidget {
               return Card(
                 child: ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.person)),
-                  title: Text(user?.name ?? 'Guest'),
+                  title: Text(user?.name ?? l10n.guest),
                   subtitle: Text(user?.email ?? ''),
                 ),
               );
             },
           ),
           const SizedBox(height: 16),
-          Text('Appearance', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.language, style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 8),
+          BlocBuilder<LocaleCubit, AppLanguage>(
+            builder: (context, language) {
+              return SegmentedButton<AppLanguage>(
+                segments: [
+                  ButtonSegment(
+                    value: AppLanguage.system,
+                    label: Text(l10n.languageSystem),
+                  ),
+                  ButtonSegment(
+                    value: AppLanguage.english,
+                    label: Text(l10n.languageEnglish),
+                  ),
+                  ButtonSegment(
+                    value: AppLanguage.arabic,
+                    label: Text(l10n.languageArabic),
+                  ),
+                ],
+                selected: {language},
+                onSelectionChanged: (value) {
+                  unawaited(
+                    context.read<LocaleCubit>().setLanguage(value.first),
+                  );
+                },
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          Text(l10n.appearance, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, mode) {
               return SegmentedButton<ThemeMode>(
-                segments: const [
-                  ButtonSegment(value: ThemeMode.system, label: Text('System')),
-                  ButtonSegment(value: ThemeMode.light, label: Text('Light')),
-                  ButtonSegment(value: ThemeMode.dark, label: Text('Dark')),
+                segments: [
+                  ButtonSegment(
+                    value: ThemeMode.system,
+                    label: Text(l10n.themeSystem),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.light,
+                    label: Text(l10n.themeLight),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.dark,
+                    label: Text(l10n.themeDark),
+                  ),
                 ],
                 selected: {mode},
                 onSelectionChanged: (value) {
@@ -62,20 +107,24 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 16),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('Environment'),
+            title: Text(l10n.environment),
             subtitle: Text(env.label),
             trailing: Chip(label: Text(env.name.name.toUpperCase())),
           ),
           const SizedBox(height: 8),
-          Text('Notifications', style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            l10n.notifications,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 8),
           const _NotificationsPanel(),
           const SizedBox(height: 24),
           OutlinedButton(
             onPressed: () => unawaited(context.read<AuthCubit>().logout()),
-            child: const Text('Sign out'),
+            child: Text(l10n.signOut),
           ),
         ],
+        ),
       ),
     );
   }
@@ -86,16 +135,15 @@ class _NotificationsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<NotificationsCubit, NotificationsState>(
       builder: (context, state) {
         return switch (state) {
-          NotificationsInitial() || NotificationsLoading() => const SizedBox(
-            height: 120,
-            child: AppLoader(),
-          ),
-          NotificationsEmpty() => const AppEmptyView(
-            title: 'No notifications',
-            message: 'Activity from your workspace will show up here.',
+          NotificationsInitial() ||
+          NotificationsLoading() => const AppSkeleton(shrinkWrap: true),
+          NotificationsEmpty() => AppEmptyView(
+            title: l10n.noNotifications,
+            message: l10n.noNotificationsMessage,
           ),
           NotificationsError(:final failure) => AppErrorView(
             message: failure.message,
@@ -108,7 +156,7 @@ class _NotificationsPanel extends StatelessWidget {
                     child: ListTile(
                       title: Text(item.title),
                       subtitle: Text(
-                        '${item.body}\n${DateFormat.MMMd().add_jm().format(item.createdAt.toLocal())}',
+                        '${item.body}\n${DateFormat.MMMd(context.localeName).add_jm().format(item.createdAt.toLocal())}',
                       ),
                       isThreeLine: true,
                       trailing: item.read

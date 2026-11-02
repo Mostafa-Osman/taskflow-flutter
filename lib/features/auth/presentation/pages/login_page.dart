@@ -44,14 +44,15 @@ class _LoginPageState extends State<LoginPage> {
           },
           builder: (context, state) {
             final loading = state is AuthLoading;
+            final l10n = context.l10n;
             return ListView(
               padding: const EdgeInsets.all(24),
               children: [
                 const SizedBox(height: 32),
-                Text('Welcome back', style: context.texts.headlineMedium),
+                Text(l10n.welcomeBack, style: context.texts.headlineMedium),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to manage projects and tasks.',
+                  l10n.signInSubtitle,
                   style: context.texts.bodyLarge?.copyWith(
                     color: context.colors.onSurfaceVariant,
                   ),
@@ -62,25 +63,33 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       AppTextField(
-                        label: 'Email',
+                        label: l10n.email,
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         autofillHints: const [AutofillHints.email],
-                        validator: Validators.email,
+                        validator: (value) => Validators.email(
+                          value,
+                          empty: l10n.emailRequired,
+                          invalid: l10n.emailInvalid,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       AppTextField(
-                        label: 'Password',
+                        label: l10n.password,
                         controller: _password,
                         obscureText: true,
                         textInputAction: TextInputAction.done,
                         autofillHints: const [AutofillHints.password],
-                        validator: Validators.password,
+                        validator: (value) => Validators.password(
+                          value,
+                          empty: l10n.passwordRequired,
+                          tooShort: l10n.passwordTooShort,
+                        ),
                       ),
                       const SizedBox(height: 24),
                       AppButton(
-                        label: 'Sign in',
+                        label: l10n.signIn,
                         loading: loading,
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
@@ -99,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: loading ? null : () => context.go('/register'),
-                  child: const Text('Create an account'),
+                  child: Text(l10n.createAnAccount),
                 ),
               ],
             );

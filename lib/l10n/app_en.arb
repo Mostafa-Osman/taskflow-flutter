@@ -1,0 +1,264 @@
+{
+  "@@locale": "en",
+  "appTitle": "TaskFlow",
+  "navProjects": "Projects",
+  "navClasses": "Classes",
+  "navTasks": "Tasks",
+  "navProfile": "Profile",
+  "language": "Language",
+  "languageSystem": "System",
+  "languageEnglish": "English",
+  "languageArabic": "Arabic",
+  "appearance": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "environment": "Environment",
+  "notifications": "Notifications",
+  "signOut": "Sign out",
+  "guest": "Guest",
+  "tryAgain": "Try again",
+  "retryLoadingMore": "Retry loading more",
+  "welcomeBack": "Welcome back",
+  "signInSubtitle": "Sign in to manage projects and tasks.",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "signIn": "Sign in",
+  "createAnAccount": "Create an account",
+  "createAccount": "Create account",
+  "alreadyHaveAccount": "Already have an account? Sign in",
+  "emailRequired": "Email is required.",
+  "emailInvalid": "Enter a valid email address.",
+  "passwordRequired": "Password is required.",
+  "passwordTooShort": "Password must be at least 8 characters.",
+  "nameRequired": "Name is required.",
+  "nameTooShort": "Name must be at least 2 characters.",
+  "classNameRequired": "Class name is required.",
+  "titleRequired": "Title is required.",
+  "projectRequired": "Project is required.",
+  "projectsTitle": "Projects",
+  "noProjectsYet": "No projects yet",
+  "noProjectsMessage": "Projects will appear here once they are created.",
+  "projectTitle": "Project",
+  "addTask": "Add task",
+  "tasksTitle": "Tasks",
+  "noTasksInProject": "No tasks in this project yet.",
+  "projectProgress": "{completed}/{total} done",
+  "@projectProgress": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "updatedOn": "Updated {date}",
+  "@updatedOn": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "newTask": "New task",
+  "editTask": "Edit task",
+  "searchTasks": "Search tasks",
+  "noTasksMatch": "No tasks match",
+  "noTasksMatchMessage": "Try a different search or clear filters.",
+  "status": "Status",
+  "priority": "Priority",
+  "clear": "Clear",
+  "allStatuses": "All statuses",
+  "allPriorities": "All priorities",
+  "endOfList": "You have reached the end.",
+  "title": "Title",
+  "description": "Description",
+  "project": "Project",
+  "dueDate": "Due date",
+  "notSet": "Not set",
+  "saveChanges": "Save changes",
+  "createTask": "Create task",
+  "taskCreated": "Task created.",
+  "taskUpdated": "Task updated.",
+  "taskDeleted": "Task deleted.",
+  "taskTitle": "Task",
+  "edit": "Edit",
+  "delete": "Delete",
+  "markCompleted": "Mark as completed",
+  "taskStatusTodo": "To do",
+  "taskStatusInProgress": "In progress",
+  "taskStatusDone": "Done",
+  "priorityLow": "Low",
+  "priorityMedium": "Medium",
+  "priorityHigh": "High",
+  "profileTitle": "Profile",
+  "noNotifications": "No notifications",
+  "noNotificationsMessage": "Activity from your workspace will show up here.",
+  "notFoundTitle": "Not found",
+  "pageDoesNotExist": "This page does not exist",
+  "pageDoesNotExistMessage": "The link may be broken or the item was removed.",
+  "goToProjects": "Go to projects",
+  "classesTitle": "Classes",
+  "integrationSettings": "Integration settings",
+  "createNativeClass": "Create Native class",
+  "noClassesYet": "No classes yet",
+  "noClassesMessage": "Create a Native class anytime. Google Classroom is optional.",
+  "filterAll": "All",
+  "filterNative": "Native",
+  "filterGoogleConnected": "Google connected",
+  "filterSyncIssues": "Sync issues",
+  "nativeClassHint": "You can create a Native class without connecting Google Classroom.",
+  "className": "Class name",
+  "subjectOptional": "Subject (optional)",
+  "localDescription": "Description (local)",
+  "nativeClassCreated": "Native class created.",
+  "sourceNative": "Native",
+  "sourceImported": "Imported",
+  "googleConnected": "Google connected",
+  "syncIssue": "Sync issue",
+  "statusActive": "Active",
+  "statusArchived": "Archived",
+  "externalLabel": "External: {name} · {section}",
+  "@externalLabel": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "section": { "type": "String" }
+    }
+  },
+  "classTitle": "Class",
+  "mapped": "Mapped",
+  "locallyManaged": "Locally managed",
+  "localClassFields": "Name override / description / subject",
+  "noLocalNotes": "No local notes",
+  "noSubject": "No subject",
+  "externallySynchronized": "Externally synchronized",
+  "externalSectionRoom": "Section {section} · Room {room}",
+  "@externalSectionRoom": {
+    "placeholders": {
+      "section": { "type": "String" },
+      "room": { "type": "String" }
+    }
+  },
+  "mapExistingCourse": "Map existing Google course",
+  "synchronizeCourse": "Synchronize course",
+  "unmapExternalCourse": "Unmap external course",
+  "coursework": "Coursework",
+  "noCourseworkYet": "No coursework imported yet.",
+  "connectBrowseFirst": "Connect Google Classroom and import or browse courses first.",
+  "confirmMapping": "Confirm mapping",
+  "confirmMappingMessage": "Map this Native class to {name}? This will not merge students by name or phone.",
+  "@confirmMappingMessage": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "mappingSaved": "Mapping saved.",
+  "googleClassroom": "Google Classroom",
+  "googleOptionalHint": "Connecting Google Classroom is optional. Native classes stay on this account if you never connect or later disconnect.",
+  "connectGoogleClassroom": "Connect Google Classroom",
+  "connectionStatus": "Connection {status}",
+  "@connectionStatus": {
+    "placeholders": {
+      "status": { "type": "String" }
+    }
+  },
+  "defaultGradePolicy": "Default grade-publication policy",
+  "approvalVsPublication": "Approval is an internal decision. Publication is a separate Classroom API write. A grade is not visible to students just because it was approved here.",
+  "importSelectedCourses": "Import selected courses",
+  "disconnectGoogleClassroom": "Disconnect Google Classroom",
+  "policyDisabled": "Disabled — never publish through this connection",
+  "policyManualOnly": "Manual only — publish after an explicit publish action",
+  "policyAfterApproval": "After teacher approval — create a publication job when a grade is approved",
+  "googleConnectedSnack": "Google Classroom connected.",
+  "googleDisconnectedSnack": "Disconnected. Native classes and history were preserved.",
+  "policyUpdatedSnack": "Default publication policy updated.",
+  "importedCoursesSnack": "Imported {count} course(s). Duplicates were reused.",
+  "@importedCoursesSnack": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "courseworkFallback": "Coursework",
+  "courseworkNotFound": "Coursework not found.",
+  "effectivePolicy": "Effective policy: {policy}",
+  "@effectivePolicy": {
+    "placeholders": {
+      "policy": { "type": "String" }
+    }
+  },
+  "approvalLocalOnly": "Approval is local. Publication happens only after a verified Classroom API result.",
+  "capabilityLabel": "Capability: {state}",
+  "@capabilityLabel": {
+    "placeholders": {
+      "state": { "type": "String" }
+    }
+  },
+  "lastCheck": "Last check {date}",
+  "@lastCheck": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "eligibleCount": "Eligible {count}",
+  "@eligibleCount": { "placeholders": { "count": { "type": "int" } } },
+  "blockedCount": "Blocked {count}",
+  "@blockedCount": { "placeholders": { "count": { "type": "int" } } },
+  "pendingCount": "Pending {count}",
+  "@pendingCount": { "placeholders": { "count": { "type": "int" } } },
+  "publishedCount": "Published {count}",
+  "@publishedCount": { "placeholders": { "count": { "type": "int" } } },
+  "failedCount": "Failed {count}",
+  "@failedCount": { "placeholders": { "count": { "type": "int" } } },
+  "conflictsCount": "Conflicts {count}",
+  "@conflictsCount": { "placeholders": { "count": { "type": "int" } } },
+  "reviewPublicationPreview": "Review publication preview",
+  "publishGrades": "Publish grades",
+  "unableToLoadPreview": "Unable to load preview.",
+  "publicationPreviewHint": "Eligible items can be published. Blocked items stay local. Approved is not the same as published to students.",
+  "scoreLabel": "Score {score}/{max}",
+  "@scoreLabel": {
+    "placeholders": {
+      "score": { "type": "String" },
+      "max": { "type": "String" }
+    }
+  },
+  "eligible": "Eligible",
+  "blocked": "Blocked",
+  "approvedLocally": "Approved locally",
+  "notApproved": "Not approved",
+  "publishSelected": "Publish selected",
+  "publishAllEligible": "Publish all eligible",
+  "latestApiOutcomes": "Latest API outcomes",
+  "verifiedGrade": "Verified grade {grade}",
+  "@verifiedGrade": {
+    "placeholders": {
+      "grade": { "type": "String" }
+    }
+  },
+  "retry": "Retry",
+  "retryStatus": "Retry status: {status}",
+  "@retryStatus": {
+    "placeholders": {
+      "status": { "type": "String" }
+    }
+  },
+  "publicationFinished": "Publication finished. Status comes from the Classroom API result, not this screen.",
+  "inheritPolicy": "Inherit connection default",
+  "disablePublication": "Disable grade publication",
+  "manualPublication": "Manual publication",
+  "publishAfterApproval": "Publish after teacher approval",
+  "policyLabel": "Policy {policy} · {capability}",
+  "@policyLabel": {
+    "placeholders": {
+      "policy": { "type": "String" },
+      "capability": { "type": "String" }
+    }
+  },
+  "noLocalNotesLine": "{name}\n{notes}\n{subject}",
+  "@noLocalNotesLine": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "notes": { "type": "String" },
+      "subject": { "type": "String" }
+    }
+  }
+}

@@ -1,24 +1,32 @@
 abstract final class Validators {
   static final _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
-  static String? email(String? value) {
+  static String? email(
+    String? value, {
+    String empty = 'Email is required.',
+    String invalid = 'Enter a valid email address.',
+  }) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Email is required.';
+      return empty;
     }
     if (!_emailPattern.hasMatch(trimmed)) {
-      return 'Enter a valid email address.';
+      return invalid;
     }
     return null;
   }
 
-  static String? password(String? value) {
+  static String? password(
+    String? value, {
+    String empty = 'Password is required.',
+    String tooShort = 'Password must be at least 8 characters.',
+  }) {
     final trimmed = value ?? '';
     if (trimmed.isEmpty) {
-      return 'Password is required.';
+      return empty;
     }
     if (trimmed.length < 8) {
-      return 'Password must be at least 8 characters.';
+      return tooShort;
     }
     return null;
   }
@@ -30,13 +38,17 @@ abstract final class Validators {
     return null;
   }
 
-  static String? name(String? value) {
+  static String? name(
+    String? value, {
+    String empty = 'Name is required.',
+    String tooShort = 'Name must be at least 2 characters.',
+  }) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Name is required.';
+      return empty;
     }
     if (trimmed.length < 2) {
-      return 'Name must be at least 2 characters.';
+      return tooShort;
     }
     return null;
   }

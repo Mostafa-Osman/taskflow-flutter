@@ -30,3 +30,7 @@ class CacheException extends AppException {
 class NotFoundException extends AppException {
   const NotFoundException([super.message = 'Not found']);
 }
+
+class ForbiddenException extends AppException {
+  const ForbiddenException([super.message = 'Forbidden']);
+}

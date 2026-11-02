@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/l10n/label_localizations.dart';
 import '../../../../core/widgets/app_error_view.dart';
 import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/app_refreshable.dart';
+import '../../../../core/widgets/app_skeleton.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/entities/task_priority.dart';
@@ -25,24 +28,24 @@ class TaskDetailsPage extends StatelessWidget {
       listenWhen: (previous, current) => current is TaskDetailsDeleted,
       listener: (context, state) {
         if (state is TaskDetailsDeleted) {
-          context.showSnack('Task deleted.');
+          context.showSnack(context.l10n.taskDeleted);
           context.pop();
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Task'),
+            title: Text(context.l10n.taskTitle),
             actions: [
               if (state is TaskDetailsSuccess)
                 IconButton(
-                  tooltip: 'Edit',
+                  tooltip: context.l10n.edit,
                   onPressed: () => context.push('/tasks/${state.task.id}/edit'),
                   icon: const Icon(Icons.edit_outlined),
                 ),
               if (state is TaskDetailsSuccess)
                 IconButton(
-                  tooltip: 'Delete',
+                  tooltip: context.l10n.delete,
                   onPressed: state.busy
                       ? null
                       : () => context.read<TaskDetailsCubit>().delete(),
@@ -51,11 +54,14 @@ class TaskDetailsPage extends StatelessWidget {
             ],
           ),
           body: switch (state) {
-            TaskDetailsInitial() || TaskDetailsLoading() => const AppLoader(),
+            TaskDetailsInitial() || TaskDetailsLoading() => const AppSkeleton(),
             TaskDetailsDeleted() => const AppLoader(),
-            TaskDetailsError(:final failure) => AppErrorView(
-              message: failure.message,
-              onRetry: () => context.read<TaskDetailsCubit>().load(taskId),
+            TaskDetailsError(:final failure) => AppRefreshable(
+              onRefresh: () => context.read<TaskDetailsCubit>().refresh(),
+              child: AppErrorView(
+                message: failure.message,
+                onRetry: () => context.read<TaskDetailsCubit>().load(taskId),
+              ),
             ),
             TaskDetailsSuccess(:final task, :final busy) => _TaskDetailsBody(
               task: task,
@@ -76,9 +82,12 @@ class _TaskDetailsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
+    return RefreshIndicator(
+      onRefresh: () => context.read<TaskDetailsCubit>().refresh(),
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        children: [
         TaskCard(task: task),
         const SizedBox(height: 16),
         Wrap(
@@ -86,7 +95,7 @@ class _TaskDetailsBody extends StatelessWidget {
           runSpacing: 8,
           children: [
             StatusBadge(
-              label: task.status.label,
+              label: task.status.l10n(context.l10n),
               color: switch (task.status) {
                 TaskStatus.todo => const Color(0xFF6B7280),
                 TaskStatus.inProgress => const Color(0xFF2563EB),
@@ -94,7 +103,7 @@ class _TaskDetailsBody extends StatelessWidget {
               },
             ),
             StatusBadge(
-              label: task.priority.label,
+              label: task.priority.l10n(context.l10n),
               color: switch (task.priority) {
                 TaskPriority.low => const Color(0xFF6B7280),
                 TaskPriority.medium => const Color(0xFFD97706),
@@ -107,7 +116,11 @@ class _TaskDetailsBody extends StatelessWidget {
         Text(task.description, style: Theme.of(context).textTheme.bodyLarge),
         const SizedBox(height: 16),
         Text(
-          'Updated ${DateFormat.yMMMd().add_jm().format(task.updatedAt.toLocal())}',
+          context.l10n.updatedOn(
+            DateFormat.yMMMd(context.localeName).add_jm().format(
+              task.updatedAt.toLocal(),
+            ),
+          ),
           style: Theme.of(context).textTheme.labelMedium,
         ),
         const SizedBox(height: 24),
@@ -116,14 +129,14 @@ class _TaskDetailsBody extends StatelessWidget {
             onPressed: busy
                 ? null
                 : () => context.read<TaskDetailsCubit>().markDone(),
-            child: const Text('Mark as completed'),
+            child: Text(context.l10n.markCompleted),
           ),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
           children: TaskStatus.values.map((status) {
             return ChoiceChip(
-              label: Text(status.label),
+              label: Text(status.l10n(context.l10n)),
               selected: task.status == status,
               onSelected: busy
                   ? null
@@ -133,6 +146,7 @@ class _TaskDetailsBody extends StatelessWidget {
           }).toList(),
         ),
       ],
+      ),
     );
   }
 }

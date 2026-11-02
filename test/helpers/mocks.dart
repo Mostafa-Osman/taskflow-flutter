@@ -4,6 +4,7 @@ import 'package:taskflow/core/analytics/analytics.dart';
 import 'package:taskflow/core/crash/crash_reporter.dart';
 import 'package:taskflow/core/logging/app_logger.dart';
 import 'package:taskflow/core/result/result.dart';
+import 'package:taskflow/core/storage/local_preferences.dart';
 import 'package:taskflow/core/utils/paged_list.dart';
 import 'package:taskflow/features/auth/domain/entities/auth_session.dart';
 import 'package:taskflow/features/auth/domain/entities/user.dart';
@@ -50,6 +51,8 @@ class MockCreateTaskUseCase extends Mock implements CreateTaskUseCase {}
 class MockUpdateTaskUseCase extends Mock implements UpdateTaskUseCase {}
 
 class MockAppLogger extends Mock implements AppLogger {}
+
+class MockLocalPreferences extends Mock implements LocalPreferences {}
 
 class MockAnalytics extends Mock implements Analytics {}
 

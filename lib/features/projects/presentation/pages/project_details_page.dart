@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/widgets/app_error_view.dart';
-import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/app_refreshable.dart';
+import '../../../../core/widgets/app_skeleton.dart';
 import '../../../tasks/presentation/cubit/tasks_cubit.dart';
 import '../../../tasks/presentation/cubit/tasks_state.dart';
 import '../../../tasks/presentation/widgets/task_card.dart';
@@ -16,14 +18,21 @@ class ProjectDetailsPage extends StatelessWidget {
 
   final String projectId;
 
+  Future<void> _refreshProject(BuildContext context) async {
+    await Future.wait([
+      context.read<ProjectDetailsCubit>().refresh(),
+      context.read<TasksCubit>().refresh(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Project'),
+        title: Text(context.l10n.projectTitle),
         actions: [
           IconButton(
-            tooltip: 'Add task',
+            tooltip: context.l10n.addTask,
             onPressed: () => context.push('/tasks/new?projectId=$projectId'),
             icon: const Icon(Icons.add),
           ),
@@ -33,32 +42,39 @@ class ProjectDetailsPage extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             ProjectDetailsInitial() ||
-            ProjectDetailsLoading() => const AppLoader(),
-            ProjectDetailsError(:final failure) => AppErrorView(
-              message: failure.message,
-              onRetry: () =>
-                  context.read<ProjectDetailsCubit>().load(projectId),
+            ProjectDetailsLoading() => const AppSkeleton(),
+            ProjectDetailsError(:final failure) => AppRefreshable(
+              onRefresh: () => _refreshProject(context),
+              child: AppErrorView(
+                message: failure.message,
+                onRetry: () =>
+                    context.read<ProjectDetailsCubit>().load(projectId),
+              ),
             ),
-            ProjectDetailsSuccess(:final project) => CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: ProjectCard(project: project),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'Tasks',
-                      style: Theme.of(context).textTheme.titleMedium,
+            ProjectDetailsSuccess(:final project) => RefreshIndicator(
+              onRefresh: () => _refreshProject(context),
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ProjectCard(project: project),
                     ),
                   ),
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 8)),
-                const _ProjectTasksList(),
-              ],
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        context.l10n.tasksTitle,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                  const _ProjectTasksList(),
+                ],
+              ),
             ),
           };
         },
@@ -76,15 +92,12 @@ class _ProjectTasksList extends StatelessWidget {
       builder: (context, state) {
         return switch (state) {
           TasksInitial() || TasksLoading() => const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Center(child: CircularProgressIndicator()),
-            ),
+            child: AppSkeleton(shrinkWrap: true),
           ),
-          TasksEmpty() => const SliverToBoxAdapter(
+          TasksEmpty() => SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Text('No tasks in this project yet.'),
+              padding: const EdgeInsets.all(24),
+              child: Text(context.l10n.noTasksInProject),
             ),
           ),
           TasksError(:final failure) => SliverToBoxAdapter(

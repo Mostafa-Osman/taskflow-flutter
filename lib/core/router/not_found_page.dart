@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../extensions/context_extensions.dart';
 import '../widgets/app_empty_view.dart';
 import 'app_routes.dart';
 
@@ -9,12 +10,13 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: const Text('Not found')),
+      appBar: AppBar(title: Text(l10n.notFoundTitle)),
       body: AppEmptyView(
-        title: 'This page does not exist',
-        message: 'The link may be broken or the item was removed.',
-        actionLabel: 'Go to projects',
+        title: l10n.pageDoesNotExist,
+        message: l10n.pageDoesNotExistMessage,
+        actionLabel: l10n.goToProjects,
         onAction: () => context.go(AppRoutes.projects),
       ),
     );
